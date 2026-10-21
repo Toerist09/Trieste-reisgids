@@ -22,7 +22,26 @@ function card(p){let url=p.query?"https://www.openstreetmap.org/search?query="+e
 function bind(){document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{let id=b.dataset.f;fav=fav.includes(id)?fav.filter(x=>x!==id):[...fav,id];save(K.f,fav);render()});document.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{custom=custom.filter(x=>x.id!==b.dataset.d);save(K.c,custom);render()})}
 function render(){let q=document.querySelector("#q").value.toLowerCase(),cat=document.querySelector("#cat").value;let arr=places().filter(p=>(cat==="alles"||p.type===cat)&&[p.name,p.summary,p.area].join(" ").toLowerCase().includes(q));document.querySelector("#places").innerHTML=arr.map(card).join("")||"<p>Geen resultaten.</p>";document.querySelector("#favs").innerHTML=places().filter(p=>fav.includes(p.id)).map(card).join("")||'<p class="muted">Nog geen favorieten. Bewaar een plek bij Ontdek.</p>';document.querySelector("#mine").innerHTML=custom.map(card).join("")||'<p class="muted">Je eigen plekken verschijnen hier.</p>';bind()}
 function phrases(){let q=document.querySelector("#pq").value.toLowerCase();document.querySelector("#phrases").innerHTML=Z.filter(p=>p.join(" ").toLowerCase().includes(q)).map(p=>`<div class="phrase"><div><div class="it">${esc(p[0])}</div><div class="nl">${esc(p[1])}</div><div class="muted small">Uitspraak: ${esc(p[2])}</div></div><button data-copy="${esc(p[0])}">⧉</button></div>`).join("");document.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>{let s=b.dataset.copy;if(navigator.clipboard?.writeText)navigator.clipboard.writeText(s).then(()=>alert("Gekopieerd: "+s)).catch(()=>alert(s));else alert(s)})}
-document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("hidden",x.id!==b.dataset.tab));if(b.dataset.tab==="favorieten")render();if(b.dataset.tab==="mijn")render();scrollTo(0,0)});
+
+document.querySelectorAll(".tab").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".tab").forEach(x =>
+    x.classList.toggle("active", x === b)
+  );
+
+  document.querySelectorAll(".view").forEach(x =>
+    x.classList.toggle("hidden", x.id !== b.dataset.tab)
+  );
+
+  if (b.dataset.tab === "favorieten") render();
+  if (b.dataset.tab === "mijn") render();
+
+  if (b.dataset.tab === "routeplanner") {
+    initRouteMap();
+  }
+
+  scrollTo(0, 0);
+});
+document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("hidden",x.id!==b.dataset.tab));if(b.dataset.tab==="favorieten")render();if(b.dataset.tab==="mijn")render();scrollTo(0,0)});
 document.querySelector("#q").oninput=render;document.querySelector("#cat").onchange=render;document.querySelector("#pq").oninput=phrases;
 document.querySelector("#form").onsubmit=e=>{e.preventDefault();custom.push({id:"custom-"+Date.now(),name:document.querySelector("#name").value.trim(),type:document.querySelector("#type").value,summary:document.querySelector("#text").value.trim(),emoji:"📌",tags:["Eigen plek"],custom:true});save(K.c,custom);e.target.reset();render();alert("Bewaard in de lokale opslag van deze browser.")};
 document.querySelector("#export").onclick=()=>{let blob=new Blob([JSON.stringify({format:"triest-backup-v1",favorites:fav,customPlaces:custom},null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="mijn-triest-reisgids.json";a.click();URL.revokeObjectURL(a.href)};
