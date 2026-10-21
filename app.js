@@ -109,3 +109,27 @@ document.querySelector("#calculateRoute")?.addEventListener("click", () => {
 });
 
 showRouteStops();
+
+let routeMap = null;
+let routeMapLayer = null;
+
+function initRouteMap() {
+  const mapElement = document.getElementById("routeMap");
+
+  if (!mapElement || typeof L === "undefined") {
+    return;
+  }
+
+  if (!routeMap) {
+    routeMap = L.map("routeMap").setView([45.6495, 13.7768], 13);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; OpenStreetMap-bijdragers',
+      maxZoom: 19
+    }).addTo(routeMap);
+
+    routeMapLayer = L.layerGroup().addTo(routeMap);
+  }
+
+  setTimeout(() => routeMap.invalidateSize(), 200);
+}
