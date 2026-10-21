@@ -1,0 +1,22 @@
+TRIËSTE — HERBRUIKBARE OFFLINE REISGIDS
+
+INSTALLATIE OP IPHONE
+1. Upload de bestanden uit deze map naar een HTTPS-host (bijvoorbeeld GitHub Pages).
+2. Open de HTTPS-link in Safari terwijl je online bent.
+3. Tik Delen > Zet op beginscherm.
+4. Open de app nog eenmaal online zodat de appbestanden gecachet kunnen worden.
+5. Test daarna in vliegtuigstand.
+
+PRIVACY
+- Favorieten, eigen plekken en notities worden in localStorage van de browser op het toestel bewaard.
+- De app stuurt die gegevens niet naar GitHub of een eigen server.
+- Geen account, analytics of tracking ingebouwd.
+- GitHub Pages kan technische bezoekgegevens verwerken volgens het eigen beleid.
+- localStorage is niet automatisch versleuteld; beveilig je toestel.
+- De exportfunctie maakt alleen een bestand wanneer jij dat kiest. Deel dat bestand niet als het privé moet blijven.
+
+OFFLINE
+- Ingebouwde inhoud, zinnen, schematische kaart, favorieten en notities werken na eerste online bezoek offline.
+- Externe kaartlinks vereisen internet; de ingebouwde kaart is schematisch en niet geschikt voor nauwkeurige navigatie.
+- Download vooraf een offline kaart in een kaartapp als je echte offline navigatie nodig hebt.
+- Controleer actuele openingstijden, prijzen en fietsregels.
