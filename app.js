@@ -29,3 +29,83 @@ document.querySelector("#export").onclick=()=>{let blob=new Blob([JSON.stringify
 document.querySelector("#import").onchange=async e=>{try{let d=JSON.parse(await e.target.files[0].text());if(!Array.isArray(d.favorites)||!Array.isArray(d.customPlaces))throw 0;fav=d.favorites;custom=d.customPlaces;save(K.f,fav);save(K.c,custom);render();alert("Back-up lokaal geïmporteerd.")}catch{alert("Geen geldige reisgidsback-up.")}e.target.value=""};
 document.querySelector("#clear").onclick=()=>{if(confirm("Alle eigen plekken, notities en favorieten op dit toestel wissen?")){fav=[];custom=[];save(K.f,fav);save(K.c,custom);render();alert("Lokale gegevens gewist.")}};
 render();phrases();if("serviceWorker"in navigator&&location.protocol.startsWith("http"))addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+/* Routeplanner Triëste */
+const ROUTE_KEY = "trieste-route-stops-v1";
+let routeStops = [];
+try {
+  routeStops = JSON.parse(localStorage.getItem(ROUTE_KEY) || "[]");
+  if (!Array.isArray(routeStops)) routeStops = [];
+} catch {
+  routeStops = [];
+}
+
+function saveRouteStops() {
+  localStorage.setItem(ROUTE_KEY, JSON.stringify(routeStops));
+}
+
+function showRouteStops() {
+  const list = document.querySelector("#routeStops");
+  if (!list) return;
+
+  list.innerHTML = routeStops.map((stop, i) =>
+    `<li>${esc(stop)} <button class="btn" type="button" data-route-remove="${i}">Verwijder</button></li>`
+  ).join("");
+
+  list.querySelectorAll("[data-route-remove]").forEach(button => {
+    button.onclick = () => {
+      routeStops.splice(Number(button.dataset.routeRemove), 1);
+      saveRouteStops();
+      showRouteStops();
+    };
+  });
+}
+
+document.querySelector("#addRouteStop")?.addEventListener("click", () => {
+  const input = document.querySelector("#routeStop");
+  const name = input.value.trim();
+
+  if (!name) {
+    alert("Vul eerst de naam van een plek in.");
+    return;
+  }
+
+  routeStops.push(name);
+  saveRouteStops();
+  input.value = "";
+  showRouteStops();
+});
+
+document.querySelector("#clearRoute")?.addEventListener("click", () => {
+  if (!confirm("Wil je alle tussenstops uit je route verwijderen?")) return;
+  routeStops = [];
+  saveRouteStops();
+  showRouteStops();
+  document.querySelector("#routeResult").innerHTML = "";
+  document.querySelector("#routeStatus").textContent = "Je route is gewist.";
+});
+
+document.querySelector("#calculateRoute")?.addEventListener("click", () => {
+  const status = document.querySelector("#routeStatus");
+  const result = document.querySelector("#routeResult");
+
+  if (routeStops.length < 2) {
+    status.textContent = "Voeg minstens twee tussenstops toe om een route te berekenen.";
+    return;
+  }
+
+  const mode = document.querySelector("#routeMode").value;
+  const profile = mode === "bike" ? "cycling" : "foot";
+  const coords = routeStops.map(name => encodeURIComponent(name + ", Trieste, Italy"));
+
+  status.textContent = "Voor routeberekening en het omzetten van plaatsnamen naar coördinaten is internet nodig.";
+  result.innerHTML = `
+    <p>Je tussenstops zijn lokaal bewaard. Open de routeplanner online om de route te berekenen.</p>
+    <a class="btn primary" target="_blank" rel="noopener"
+       href="https://www.openstreetmap.org/directions?engine=fossgis_osrm_${profile}&route=">
+       Open routeplanner ↗
+    </a>
+    <p class="muted small">Controleer de tussenstops in de online routeplanner. Deze link geeft je stops niet automatisch door.</p>
+  `;
+});
+
+showRouteStops();
