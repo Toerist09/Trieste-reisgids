@@ -102,14 +102,17 @@ document.querySelector("#openRouteGoogle")?.addEventListener("click", () => {
 
   const encode = (value) =>
     encodeURIComponent(value + ", Trieste, Italy");
+ 
+const hotel = encode(
+  "Hotello Trieste, Via Valdirivo 6, 34132 Trieste, Italy"
+);
 
-  const origin = encode(routeStops[0]);
-  const destination = encode(routeStops[routeStops.length - 1]);
+const origin = hotel;
+const destination = hotel;
 
-  const waypoints = routeStops
-    .slice(1, -1)
-    .map(encode)
-    .join("%7C");
+const waypoints = routeStops
+  .map(encode)
+  .join("%7C");
 
   let url =
     "https://www.google.com/maps/dir/?api=1" +
