@@ -23,7 +23,34 @@
       Kies een route om te beginnen.
     </p>
   </div>
+<div class="panel">
+  <h3>Mijn favoriete plekken</h3>
+  <p>Kies de plekken die je wilt bezoeken en maak daarna een wandel- of fietsroute.</p>
 
+  <label for="favorietePlekken">Kies je favoriete plekken</label>
+  <select id="favorietePlekken" multiple size="5" style="width:100%;">
+    <option value="Canal Grande, Trieste, Italy">Canal Grande</option>
+    <option value="Piazza Unità d'Italia, Trieste, Italy">Piazza Unità d’Italia</option>
+    <option value="Piazza della Borsa, Trieste, Italy">Piazza della Borsa</option>
+    <option value="Teatro Romano, Trieste, Italy">Romeins Theater</option>
+    <option value="Castello di San Giusto, Trieste, Italy">Castello di San Giusto</option>
+    <option value="Castello di Miramare, Trieste, Italy">Castello di Miramare</option>
+    <option value="Barcola, Trieste, Italy">Barcola</option>
+  </select>
+
+  <p class="muted small">Selecteer meerdere plekken. Op een computer houd je Ctrl (Windows) of Command (Mac) ingedrukt tijdens het klikken.</p>
+
+  <label for="favorieteVervoer">Vervoer</label>
+  <select id="favorieteVervoer">
+    <option value="walking">Wandelen</option>
+    <option value="bicycling">Fietsen</option>
+  </select>
+
+  <button class="btn primary" id="maakFavorietenRoute" type="button">
+    Maak route in Google Maps
+  </button>
+  <p id="favorietenRouteStatus" class="muted" aria-live="polite"></p>
+</div>
 <div class="panel"><h3>Fietsroute 1 · Barcola langs zee</h3><p>Vertrek bij Piazza Unità d’Italia en volg de kust richting Barcola waar fietsen is toegestaan. Controleer ter plaatse de verkeerssituatie en de fietsborden. Keer terug via dezelfde weg.</p><div class="route"><b>Offline route-notities</b><ol><li>Piazza Unità d’Italia</li><li>Volg de kust noordwestwaarts richting Barcola</li><li>Pauze aan zee en keer terug</li></ol><span class="muted small">Controleer ter plaatse fietsborden, verkeer en toegestane fietspaden.</span></div><div class="actions">
   <button class="btn primary" id="toonBarcolaRoute" type="button">
     Toon Barcola-route op kaart
