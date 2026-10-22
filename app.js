@@ -122,7 +122,33 @@ window.L.Icon.Default.mergeOptions({
   routeMap.setView([45.6495, 13.7768], 13);
 }, 500);
 }
+let fietsRouteMap = null;
+let fietsRouteLayer = null;
 
+function initFietsRouteMap() {
+  const mapElement = document.getElementById("fietsRouteMap");
+
+  if (!mapElement || typeof window.L === "undefined") return;
+
+  if (!fietsRouteMap) {
+    fietsRouteMap = window.L.map("fietsRouteMap").setView(
+      [45.6495, 13.7768],
+      12
+    );
+
+    window.L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution: "&copy; OpenStreetMap-bijdragers",
+        maxZoom: 19
+      }
+    ).addTo(fietsRouteMap);
+
+    fietsRouteLayer = window.L.layerGroup().addTo(fietsRouteMap);
+  }
+
+  setTimeout(() => fietsRouteMap.invalidateSize(true), 300);
+}
 document.querySelectorAll(".tab").forEach(button => {
   button.addEventListener("click", () => {
     if (button.dataset.tab === "routeplanner") {
