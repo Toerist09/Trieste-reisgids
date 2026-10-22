@@ -113,7 +113,10 @@ function initRouteMap() {
     routeMapLayer = window.L.layerGroup().addTo(routeMap);
   }
 
-  setTimeout(() => routeMap.invalidateSize(), 200);
+ setTimeout(() => {
+  routeMap.invalidateSize(true);
+  routeMap.setView([45.6495, 13.7768], 13);
+}, 500);
 }
 
 document.querySelectorAll(".tab").forEach(button => {
