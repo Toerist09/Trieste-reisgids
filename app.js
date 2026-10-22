@@ -29,3 +29,67 @@ document.querySelector("#export").onclick=()=>{let blob=new Blob([JSON.stringify
 document.querySelector("#import").onchange=async e=>{try{let d=JSON.parse(await e.target.files[0].text());if(!Array.isArray(d.favorites)||!Array.isArray(d.customPlaces))throw 0;fav=d.favorites;custom=d.customPlaces;save(K.f,fav);save(K.c,custom);render();alert("Back-up lokaal geïmporteerd.")}catch{alert("Geen geldige reisgidsback-up.")}e.target.value=""};
 document.querySelector("#clear").onclick=()=>{if(confirm("Alle eigen plekken, notities en favorieten op dit toestel wissen?")){fav=[];custom=[];save(K.f,fav);save(K.c,custom);render();alert("Lokale gegevens gewist.")}};
 render();phrases();if("serviceWorker"in navigator&&location.protocol.startsWith("http"))addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+
+const routeStorageKey = "triest_route_stops_v1";
+let routeStops = [];
+
+try {
+  routeStops = JSON.parse(localStorage.getItem(routeStorageKey) || "[]");
+  if (!Array.isArray(routeStops)) routeStops = [];
+} catch {
+  routeStops = [];
+}
+
+function showRouteStops() {
+  const list = document.querySelector("#routeStops");
+  if (!list) return;
+
+  list.innerHTML = "";
+
+  routeStops.forEach((name, index) => {
+    const item = document.createElement("li");
+    item.textContent = name + " ";
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.textContent = "Verwijder";
+    remove.onclick = () => {
+      routeStops.splice(index, 1);
+      saveRouteStops();
+    };
+
+    item.appendChild(remove);
+    list.appendChild(item);
+  });
+}
+
+function saveRouteStops() {
+  localStorage.setItem(routeStorageKey, JSON.stringify(routeStops));
+  showRouteStops();
+}
+
+document.querySelector("#addRouteStop")?.addEventListener("click", () => {
+  const input = document.querySelector("#routeStop");
+  const name = input?.value.trim();
+
+  if (!name) {
+    alert("Vul eerst de naam van een plek in.");
+    return;
+  }
+
+  routeStops.push(name);
+  saveRouteStops();
+  input.value = "";
+  input.focus();
+});
+
+document.querySelector("#clearRoute")?.addEventListener("click", () => {
+  if (confirm("Wil je alle tussenstops uit je route verwijderen?")) {
+    routeStops = [];
+    saveRouteStops();
+    const result = document.querySelector("#routeResult");
+    if (result) result.innerHTML = "";
+  }
+});
+
+showRouteStops();
