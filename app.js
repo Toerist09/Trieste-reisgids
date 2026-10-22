@@ -154,8 +154,10 @@ document.querySelectorAll(".tab").forEach(button => {
     if (button.dataset.tab === "routeplanner") {
       initRouteMap();
     }
-      if (button.dataset.tab === "kaart") {
+
+    if (button.dataset.tab === "kaart") {
       initFietsRouteMap();
+    }
   });
 });
 
