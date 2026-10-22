@@ -152,3 +152,7 @@ function initRouteMap() {
 
   setTimeout(() => routeMap.invalidateSize(), 200);
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  initRouteMap();
+});
