@@ -302,11 +302,15 @@ document.querySelector("#calculateRoute")?.addEventListener("click", async () =>
         Number(places[0].lat)
       ]);
     }
+  
+const routeMode = document.querySelector("#routeMode")?.value || "foot";
 
-    const routeUrl =
-      "https://router.project-osrm.org/route/v1/foot/" +
-      coordinates.map(point => point.join(",")).join(";") +
-      "?overview=full&geometries=geojson";
+const routeUrl =
+  "https://routing.openstreetmap.de/routed-" +
+  (routeMode === "bike" ? "bike" : "foot") +
+  "/route/v1/driving/" +
+  coordinates.map(point => point.join(",")).join(";") +
+  "?overview=full&geometries=geojson";
 
     const routeResponse = await fetch(routeUrl);
     if (!routeResponse.ok) throw new Error("De route kon niet worden opgehaald.");
