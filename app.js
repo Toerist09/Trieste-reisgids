@@ -149,6 +149,53 @@ function initFietsRouteMap() {
 
   setTimeout(() => fietsRouteMap.invalidateSize(true), 300);
 }
+
+document.getElementById("toonBarcolaRoute")?.addEventListener("click", () => {
+  initFietsRouteMap();
+
+  if (!fietsRouteMap || !fietsRouteLayer) return;
+
+  fietsRouteLayer.clearLayers();
+
+  const start = [45.6495, 13.7768];
+  const barcola = [45.6865, 13.7665];
+
+  const routepunten = [
+    start,
+    [45.6550, 13.7730],
+    [45.6630, 13.7700],
+    [45.6740, 13.7680],
+    barcola
+  ];
+
+  window.L.polyline(routepunten, {
+    color: "#167d9a",
+    weight: 5
+  }).addTo(fietsRouteLayer);
+
+  window.L.marker(start)
+    .bindPopup("Start: Piazza Unità d’Italia")
+    .addTo(fietsRouteLayer);
+
+  window.L.marker(barcola)
+    .bindPopup("Bestemming: Barcola")
+    .addTo(fietsRouteLayer);
+
+  fietsRouteMap.fitBounds(
+    window.L.latLngBounds(routepunten),
+    { padding: [25, 25] }
+  );
+
+  const status = document.getElementById("fietsRouteStatus");
+  if (status) {
+    status.textContent =
+      "Indicatieve route naar Barcola. Controleer de werkelijke fietsroute en toegestane wegen ter plaatse.";
+  }
+
+  document.getElementById("fietsRouteMap")
+    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+
 document.querySelectorAll(".tab").forEach(button => {
   button.addEventListener("click", () => {
     if (button.dataset.tab === "routeplanner") {
