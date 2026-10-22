@@ -118,7 +118,10 @@ const waypoints = routeStops
     "https://www.google.com/maps/dir/?api=1" +
     "&origin=" + origin +
     "&destination=" + destination +
-    "&travelmode=bicycling";
+   "&travelmode=" +
+(document.querySelector("#routeMode")?.value === "foot"
+  ? "walking"
+  : "bicycling");
 
   if (waypoints) {
     url += "&waypoints=" + waypoints;
