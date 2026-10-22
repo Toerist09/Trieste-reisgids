@@ -275,7 +275,7 @@ document.getElementById("maakFavorietenRoute")?.addEventListener("click", () => 
     url += "&waypoints=" + waypoints;
   }
 
-  window.open(url, "_blank", "noopener");
+ window.location.href = url;
 
   if (status) {
     status.textContent = "Je route wordt geopend in Google Maps.";
