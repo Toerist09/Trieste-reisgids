@@ -243,6 +243,44 @@ document.getElementById("toonBarcolaRoute")?.addEventListener("click", async () 
     }
   }
 });
+document.getElementById("maakFavorietenRoute")?.addEventListener("click", () => {
+  const plekken = document.getElementById("favorietePlekken");
+  const vervoer = document.getElementById("favorieteVervoer");
+  const status = document.getElementById("favorietenRouteStatus");
+
+  const gekozen = Array.from(plekken.selectedOptions).map(option => option.value);
+
+  if (gekozen.length < 2) {
+    if (status) {
+      status.textContent = "Selecteer minstens twee plekken voor je route.";
+    }
+    return;
+  }
+
+  const origin = encodeURIComponent(gekozen[0]);
+  const destination = encodeURIComponent(gekozen[gekozen.length - 1]);
+
+  const waypoints = gekozen
+    .slice(1, -1)
+    .map(plek => encodeURIComponent(plek))
+    .join("%7C");
+
+  let url =
+    "https://www.google.com/maps/dir/?api=1" +
+    "&origin=" + origin +
+    "&destination=" + destination +
+    "&travelmode=" + vervoer.value;
+
+  if (waypoints) {
+    url += "&waypoints=" + waypoints;
+  }
+
+  window.open(url, "_blank", "noopener");
+
+  if (status) {
+    status.textContent = "Je route wordt geopend in Google Maps.";
+  }
+});
 document.querySelectorAll(".tab").forEach(button => {
   button.addEventListener("click", () => {
     if (button.dataset.tab === "routeplanner") {
