@@ -100,7 +100,7 @@ let routeMapLayer = null;
 function initRouteMap() {
   const mapElement = document.getElementById("routeMap");
 
-  if (!mapElement || typeof L === "undefined") return;
+  if (!mapElement || typeof window.L === "undefined") return;
 
   if (!routeMap) {
    routeMap = window.L.map("routeMap").setView([45.6495, 13.7768], 13); 
@@ -110,7 +110,7 @@ function initRouteMap() {
       maxZoom: 19
     }).addTo(routeMap);
 
-    routeMapLayer = L.layerGroup().addTo(routeMap);
+    routeMapLayer = window.L.layerGroup().addTo(routeMap);
   }
 
   setTimeout(() => routeMap.invalidateSize(), 200);
