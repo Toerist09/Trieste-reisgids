@@ -189,7 +189,11 @@ document.getElementById("toonBarcolaRoute")?.addEventListener("click", async () 
       .bindPopup("Bestemming: Barcola")
       .addTo(fietsRouteLayer);
 
-    fietsRouteMap.fitBounds(lijn.getBounds(), { padding: [25, 25] });
+    fietsRouteMap.fitBounds(lijn.getBounds(), {
+  padding: [45, 45],
+  maxZoom: 14,
+  animate: true
+});
 
     if (status) {
       status.textContent =
