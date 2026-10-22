@@ -13,7 +13,19 @@
 <nav class="tabs"><button class="tab active" data-tab="ontdek">Ontdek</button><button class="tab" data-tab="kaart">Kaart & fietsen</button><button class="tab" data-tab="zinnen">Italiaans</button><button class="tab" data-tab="favorieten">Favorieten</button><button class="tab" data-tab="mijn">Mijn reis</button><button class="tab" data-tab="privacy">Privacy</button></nav>
   <button class="tab" data-tab="routeplanner">Mijn route</button>
 <section id="ontdek" class="view"><div class="search"><input id="q" placeholder="Zoek plek of tip…"><select id="cat"><option value="alles">Alles</option><option value="eten">Eten & koffie</option><option value="cultuur">Musea</option><option value="zien">Bezienswaardigheden</option><option value="fiets">Fietsen</option></select></div><div id="places" class="grid"></div><p class="muted small">Controleer openingstijden en routeomstandigheden wanneer je online bent.</p></section>
-<section id="kaart" class="view hidden"><h2>Kaart & fietsroutes</h2><div class="panel"><h3>Schematische offline kaart</h3><p class="muted">Niet op schaal; bedoeld voor oriëntatie, niet voor navigatie.</p>
+<section id="kaart" class="view hidden"><h2>Kaart & fietsroutes</h2> <div class="panel">
+    <h3>Interactieve fiets- en wandelroutes</h3>
+    <p class="muted">Kies een route om het traject op de kaart te bekijken.</p>
+    <div id="fietsRouteMap"
+         style="height: 380px; width: 100%; border-radius: 12px; overflow: hidden;">
+    </div>
+    <p id="fietsRouteStatus" class="muted" aria-live="polite">
+      Kies een route om te beginnen.
+    </p>
+  </div>
+
+  <div class="panel">
+    <h3>Schematische offline kaart</h3><div class="panel"><h3>Schematische offline kaart</h3><p class="muted">Niet op schaal; bedoeld voor oriëntatie, niet voor navigatie.</p>
 <svg class="map" viewBox="0 0 360 240" role="img" aria-label="Schematische kaart van Triëste"><rect width="360" height="240" fill="#e7eee6"/><path d="M0 0H360V65C300 75 300 115 260 140S200 190 165 240H0Z" fill="#b9d9e2"/><path d="M0 80C60 85 90 110 130 120S210 155 260 120S310 90 360 95" fill="none" stroke="#fff9ed" stroke-width="10"/><path d="M30 165L90 145 145 165 195 140 240 165 310 140" fill="none" stroke="#d3c6ac" stroke-width="7"/><g font-size="10" font-family="Arial" fill="#24443e"><circle cx="138" cy="104" r="5" fill="#d56f52"/><text x="146" y="100">Canal Grande</text><circle cx="188" cy="145" r="5" fill="#d56f52"/><text x="196" y="142">Piazza Unità</text><circle cx="248" cy="180" r="5" fill="#d56f52"/><text x="255" y="177">San Giusto</text><circle cx="75" cy="52" r="5" fill="#174b45"/><text x="83" y="49">Station</text><circle cx="30" cy="27" r="5" fill="#174b45"/><text x="38" y="24">Barcola</text><text x="12" y="220" fill="#3e7180">Golfo di Trieste</text></g></svg>
 <div class="actions"><a class="btn primary" target="_blank" rel="noopener" href="https://www.openstreetmap.org/#map=14/45.6500/13.7700">OpenStreetMap ↗</a><a class="btn" target="_blank" rel="noopener" href="https://maps.google.com/?q=Trieste+Italy">Google Maps ↗</a></div><p class="muted small">Externe kaarten vragen internet. Download vooraf een offline kaart in een geschikte kaartapp als je echte offline navigatie nodig hebt.</p></div>
 <div class="panel"><h3>Fietsroute 1 · Barcola langs zee</h3><p>Vertrek bij Piazza Unità d’Italia en rijd richting Barcola langs de kust waar fietsen veilig en toegestaan is. Keer terug via dezelfde weg.</p><div class="route"><b>Offline route-notities</b><ol><li>Piazza Unità d’Italia</li><li>Volg de kust noordwestwaarts richting Barcola</li><li>Pauze aan zee en keer terug</li></ol><span class="muted small">Controleer ter plaatse fietsborden, verkeer en toegestane fietspaden.</span></div><div class="actions"><a class="btn primary" target="_blank" rel="noopener" href="https://www.openstreetmap.org/search?query=Barcola%20Trieste">Barcola op kaart ↗</a></div></div>
