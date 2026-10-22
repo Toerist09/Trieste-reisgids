@@ -94,6 +94,36 @@ document.querySelector("#clearRoute")?.addEventListener("click", () => {
 
 showRouteStops();
 
+document.querySelector("#openRouteGoogle")?.addEventListener("click", () => {
+  if (routeStops.length < 2) {
+    alert("Voeg minstens twee tussenstops toe voordat je Google Maps opent.");
+    return;
+  }
+
+  const encode = (value) =>
+    encodeURIComponent(value + ", Trieste, Italy");
+
+  const origin = encode(routeStops[0]);
+  const destination = encode(routeStops[routeStops.length - 1]);
+
+  const waypoints = routeStops
+    .slice(1, -1)
+    .map(encode)
+    .join("%7C");
+
+  let url =
+    "https://www.google.com/maps/dir/?api=1" +
+    "&origin=" + origin +
+    "&destination=" + destination +
+    "&travelmode=bicycling";
+
+  if (waypoints) {
+    url += "&waypoints=" + waypoints;
+  }
+
+  window.open(url, "_blank", "noopener");
+});
+
 let routeMap = null;
 let routeMapLayer = null;
 
