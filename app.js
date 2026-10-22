@@ -127,3 +127,86 @@ document.querySelectorAll(".tab").forEach(button => {
 if (document.getElementById("routeplanner")) {
   initRouteMap();
 }
+
+document.querySelector("#calculateRoute")?.addEventListener("click", async () => {
+  const status = document.querySelector("#routeStatus");
+  const result = document.querySelector("#routeResult");
+
+  const say = (message) => {
+    if (status) status.textContent = message;
+    if (result) result.textContent = message;
+  };
+
+  if (routeStops.length < 2) {
+    say("Voeg minstens twee tussenstops toe om een route te berekenen.");
+    return;
+  }
+
+  if (!window.L || !routeMap) {
+    say("De kaart is nog niet klaar. Open eerst de routeplanner.");
+    return;
+  }
+
+  say("Route wordt berekend…");
+
+  try {
+    const coordinates = [];
+
+    for (const name of routeStops) {
+      const url = new URL("https://nominatim.openstreetmap.org/search");
+      url.searchParams.set("q", name + ", Trieste, Italy");
+      url.searchParams.set("format", "jsonv2");
+      url.searchParams.set("limit", "1");
+
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Locatie zoeken is mislukt.");
+
+      const places = await response.json();
+      if (!places.length) {
+        throw new Error("Locatie niet gevonden: " + name);
+      }
+
+      coordinates.push([
+        Number(places[0].lon),
+        Number(places[0].lat)
+      ]);
+    }
+
+    const routeUrl =
+      "https://router.project-osrm.org/route/v1/foot/" +
+      coordinates.map(point => point.join(",")).join(";") +
+      "?overview=full&geometries=geojson";
+
+    const routeResponse = await fetch(routeUrl);
+    if (!routeResponse.ok) throw new Error("De route kon niet worden opgehaald.");
+
+    const routeData = await routeResponse.json();
+
+    if (routeData.code !== "Ok" || !routeData.routes?.length) {
+      throw new Error("Er kon geen route tussen deze stops worden gevonden.");
+    }
+
+    routeMapLayer.clearLayers();
+
+    const line = window.L.geoJSON(routeData.routes[0].geometry, {
+      style: { color: "#1769aa", weight: 5 }
+    }).addTo(routeMapLayer);
+
+    coordinates.forEach((point, index) => {
+      window.L.marker([point[1], point[0]])
+        .bindPopup(routeStops[index])
+        .addTo(routeMapLayer);
+    });
+
+    routeMap.fitBounds(line.getBounds(), { padding: [20, 20] });
+
+    const km = (routeData.routes[0].distance / 1000).toFixed(1);
+    const minutes = Math.round(routeData.routes[0].duration / 60);
+
+    say("Route gevonden: ongeveer " + km + " km. Reistijd: circa " +
+      minutes + " minuten.");
+  } catch (error) {
+    console.error("Routeberekening mislukt:", error);
+    say("Route berekenen lukte niet. Controleer de plaatsnamen en je internetverbinding.");
+  }
+});
